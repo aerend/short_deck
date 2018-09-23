@@ -1,6 +1,6 @@
 import itertools
 
-import poker_types
+from short_deck import poker_types
 
 RANK_STRING_LOOKUP = {
     'a': poker_types.Rank.ACE,
@@ -140,3 +140,18 @@ def expand_range(hand_range_string):
                     hand_range.add(hand)
                 break
     return hand_range
+
+
+def expand_board(board_string):
+    assert len(board_string) in [0, 2, 4, 6, 8, 10]
+    if len(board_string) == 0:
+        return 0
+    cards = []
+    for i in range(len(board_string), step=2):
+        rank = board[i]
+        suit = board[i + 1]
+        assert rank in VALID_RANKS
+        assert suit in VALID_SUITS
+        cards.append(poker_types.Card(RANK_STRING_LOOKUP[rank], SUIT_STRING_LOOKUP[suit]))
+    cards = poker_types.Cards(cards=cards)
+    return cards.value

@@ -2,9 +2,9 @@ import functools
 import operator
 import random
 
-import range_expander
-import hand_evaluator
-import card_generators
+from short_deck import range_expander
+from short_deck import hand_evaluator
+from short_deck import card_generators
 
 
 def _build_hands(hand_ranges, players):

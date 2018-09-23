@@ -1,6 +1,6 @@
 import random
 
-import poker_types
+from short_deck import poker_types
 
 MIN_CARD_BIT = poker_types.Rank.SIX * 4 + poker_types.Suit.DIAMONDS
 MAX_CARD_BIT = poker_types.Rank.ACE * 4 + poker_types.Suit.SPADES
@@ -14,14 +14,14 @@ def generate_all_card_combinations(number_of_cards, excluded_cards=0):
         if excluded_cards & bitmask:
             continue
         elif currently_active_bits == number_of_cards:
-            yield bitmask << MIN_CARD_BIT
+            yield bitmask
         elif currently_active_bits > number_of_cards:
             continue
         elif current_bit > MAX_CARD_BIT:
             continue
         else:
             stack.append((bitmask, currently_active_bits, current_bit + 1))
-            bitmask |= 1 << current_bit
+            bitmask |= (1 << current_bit)
             stack.append((bitmask, currently_active_bits + 1, current_bit + 1))
 
 

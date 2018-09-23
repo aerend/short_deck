@@ -1,8 +1,8 @@
 import itertools
 
-from poker_types import Rank
-import poker_types
-import card_generators
+from short_deck.poker_types import Rank
+from short_deck import poker_types
+from short_deck import card_generators
 
 SEVEN_CARD = 'seven_card_strength_lookup_table'
 FIVE_CARD = 'five_card_strength_lookup_table'
@@ -147,8 +147,17 @@ def read_lookup_table(file_name):
     return lookup_table
 
 
+def get_lookup_table(file_name):
+    try:
+        lookup_table = read_lookup_table(file_name)
+    except FileNotFoundError:
+        lookup_table = build_seven_card_strength_lookup_table()
+        write_lookup_table(lookup_table, file_name)
+    return lookup_table
+
+
 if __name__ == '__main__':
     seven_card_strength_lookup = build_seven_card_strength_lookup_table()
-    write_lookup_table(seven_card_strength_lookup, 'seven_card_strength_lookup.csv')
+    # write_lookup_table(seven_card_strength_lookup, 'seven_card_strength_lookup.csv')
     # seven_card_strength_lookup = build_seven_card_strength_lookup_table()
     pass
