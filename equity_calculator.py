@@ -65,7 +65,27 @@ def compare_hand_ranges(seven_card_strength_lookup, *hand_ranges, board=0, board
     return player_results
 
 
-def compare_hand_ranges_exhaustive():
+def compare_hands_exhaustive(seven_card_strength_lookup, hand_1, hand_2, board=0, board_size=0):
+    player_results = [{'wins': 0, 'ties': 0, 'losses': 0} for _ in range(2)]
+    removed_cards = hand_1 | hand_2 | board
+    for partial_board in card_generators.generate_all_card_combinations(2, excluded_cards=removed_cards):
+        full_board = board | partial_board
+        print(full_board, board, partial_board)
+        hand_1_strength = seven_card_strength_lookup[hand_1 | full_board]
+        hand_2_strength = seven_card_strength_lookup[hand_2 | full_board]
+        if hand_1_strength > hand_2_strength:
+            player_results[0]['wins'] += 1
+            player_results[1]['losses'] += 1
+        elif hand_1_strength == hand_2_strength:
+            player_results[0]['ties'] += 1
+            player_results[1]['ties'] += 1
+        else:
+            player_results[0]['losses'] += 1
+            player_results[1]['wins'] += 1
+    return player_results
+
+
+def compare_hand_ranges_exhaustive(seven_card_strength_lookup, *hand_ranges, board=0, board_size=0):
     pass
 
 
@@ -85,9 +105,9 @@ def main():
     #     hand_ranges.append([hand.value for hand in range_expander.expand_range(hand_range)])
     #     i += 1
 
-    results = compare_hand_ranges(seven_card_strength_lookup, *hand_ranges)
-    for result in results:
-        print(result)
+    # results = compare_hand_ranges(seven_card_strength_lookup, *hand_ranges)
+    # for result in results:
+    #     print(result)
 
 
 if __name__ == '__main__':
