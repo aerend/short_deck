@@ -1,24 +1,24 @@
 import itertools
 
-from short_deck import poker_types
+from short_deck import card
 
 RANK_STRING_LOOKUP = {
-    'a': poker_types.Rank.ACE,
-    'k': poker_types.Rank.KING,
-    'q': poker_types.Rank.QUEEN,
-    'j': poker_types.Rank.JACK,
-    't': poker_types.Rank.TEN,
-    '9': poker_types.Rank.NINE,
-    '8': poker_types.Rank.EIGHT,
-    '7': poker_types.Rank.SEVEN,
-    '6': poker_types.Rank.SIX,
+    'a': card.Rank.ACE,
+    'k': card.Rank.KING,
+    'q': card.Rank.QUEEN,
+    'j': card.Rank.JACK,
+    't': card.Rank.TEN,
+    '9': card.Rank.NINE,
+    '8': card.Rank.EIGHT,
+    '7': card.Rank.SEVEN,
+    '6': card.Rank.SIX,
 }
 
 SUIT_STRING_LOOKUP = {
-    'd': poker_types.Suit.DIAMONDS,
-    'c': poker_types.Suit.CLUBS,
-    'h': poker_types.Suit.HEARTS,
-    's': poker_types.Suit.SPADES,
+    'd': card.Suit.DIAMONDS,
+    'c': card.Suit.CLUBS,
+    'h': card.Suit.HEARTS,
+    's': card.Suit.SPADES,
 }
 
 VALID_RANKS = RANK_STRING_LOOKUP.keys()
@@ -40,8 +40,8 @@ def single_hand_converter(hand_string):
     rank_2 = RANK_STRING_LOOKUP[rank_2]
     suit_1 = SUIT_STRING_LOOKUP[suit_1]
     suit_2 = SUIT_STRING_LOOKUP[suit_2]
-    cards = [poker_types.Card(rank_1, suit_1), poker_types.Card(rank_2, suit_2)]
-    return [poker_types.Cards(cards=cards)]
+    cards = [card.Card(rank_1, suit_1), card.Card(rank_2, suit_2)]
+    return [card.Cards(cards=cards)]
 
 
 def suited_hand_converter(hand_string):
@@ -56,10 +56,10 @@ def suited_hand_converter(hand_string):
     rank_1 = RANK_STRING_LOOKUP[rank_1]
     rank_2 = RANK_STRING_LOOKUP[rank_2]
     cards = []
-    for suit in poker_types.Suit:
-        card_1 = poker_types.Card(rank_1, suit)
-        card_2 = poker_types.Card(rank_2, suit)
-        cards.append(poker_types.Cards(cards=[card_1, card_2]))
+    for suit in card.Suit:
+        card_1 = card.Card(rank_1, suit)
+        card_2 = card.Card(rank_2, suit)
+        cards.append(card.Cards(cards=[card_1, card_2]))
     assert len(cards) == 4
     return cards
 
@@ -74,10 +74,10 @@ def offsuited_handed_converter(hand_string):
     rank_1 = RANK_STRING_LOOKUP[rank_1]
     rank_2 = RANK_STRING_LOOKUP[rank_2]
     cards = []
-    for suit_1, suit_2 in itertools.permutations(poker_types.Suit, 2):
-        card_1 = poker_types.Card(rank_1, suit_1)
-        card_2 = poker_types.Card(rank_2, suit_2)
-        cards.append(poker_types.Cards(cards=[card_1, card_2]))
+    for suit_1, suit_2 in itertools.permutations(card.Suit, 2):
+        card_1 = card.Card(rank_1, suit_1)
+        card_2 = card.Card(rank_2, suit_2)
+        cards.append(card.Cards(cards=[card_1, card_2]))
     assert len(cards) == 12
     return cards
 
@@ -92,10 +92,10 @@ def paired_hand_converter(hand_string):
     rank_1 = RANK_STRING_LOOKUP[rank_1]
     rank_2 = RANK_STRING_LOOKUP[rank_2]
     cards = []
-    for suit_1, suit_2 in itertools.combinations(poker_types.Suit, 2):
-        card_1 = poker_types.Card(rank_1, suit_1)
-        card_2 = poker_types.Card(rank_2, suit_2)
-        cards.append(poker_types.Cards(cards=[card_1, card_2]))
+    for suit_1, suit_2 in itertools.combinations(card.Suit, 2):
+        card_1 = card.Card(rank_1, suit_1)
+        card_2 = card.Card(rank_2, suit_2)
+        cards.append(card.Cards(cards=[card_1, card_2]))
     assert len(cards) == 6
     return cards
 
@@ -110,11 +110,11 @@ def nonpaired_hand_converter(hand_string):
     rank_1 = RANK_STRING_LOOKUP[rank_1]
     rank_2 = RANK_STRING_LOOKUP[rank_2]
     cards = []
-    for suit_1 in poker_types.Suit:
-        for suit_2 in poker_types.Suit:
-            card_1 = poker_types.Card(rank_1, suit_1)
-            card_2 = poker_types.Card(rank_2, suit_2)
-            cards.append(poker_types.Cards(cards=[card_1, card_2]))
+    for suit_1 in card.Suit:
+        for suit_2 in card.Suit:
+            card_1 = card.Card(rank_1, suit_1)
+            card_2 = card.Card(rank_2, suit_2)
+            cards.append(card.Cards(cards=[card_1, card_2]))
     assert len(cards) == 16
     return cards
 
@@ -153,6 +153,6 @@ def expand_board(board_string):
         suit = board_string[i + 1]
         assert rank in VALID_RANKS
         assert suit in VALID_SUITS
-        cards.append(poker_types.Card(RANK_STRING_LOOKUP[rank], SUIT_STRING_LOOKUP[suit]))
-    cards = poker_types.Cards(cards=cards)
+        cards.append(card.Card(RANK_STRING_LOOKUP[rank], SUIT_STRING_LOOKUP[suit]))
+    cards = card.Cards(cards=cards)
     return cards.value

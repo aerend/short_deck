@@ -1,14 +1,11 @@
 import itertools
 
-from short_deck.poker_types import Rank
-from short_deck import poker_types
+from short_deck.card import Rank
+from short_deck import card
 from short_deck import card_generators
 
-SEVEN_CARD = 'seven_card_strength_lookup_table'
-FIVE_CARD = 'five_card_strength_lookup_table'
 
 # TODO: some unecessary sorting is done
-
 
 def _is_quads(cards):
     ranks = [card.rank for card in cards]
@@ -82,15 +79,15 @@ def _is_high_card(cards):
 
 
 EVALUATORS = {
-    poker_types.HandRank.STRAIGHT_FLUSH: _is_straight_flush,
-    poker_types.HandRank.QUADS: _is_quads,
-    poker_types.HandRank.FLUSH: _is_flush,
-    poker_types.HandRank.FULL_HOUSE: _is_full_house,
-    poker_types.HandRank.TRIPS: _is_trips,
-    poker_types.HandRank.STRAIGHT: _is_straight,
-    poker_types.HandRank.TWO_PAIR: _is_two_pair,
-    poker_types.HandRank.PAIR: _is_pair,
-    poker_types.HandRank.HIGH_CARD: _is_high_card
+    card.HandRank.STRAIGHT_FLUSH: _is_straight_flush,
+    card.HandRank.QUADS: _is_quads,
+    card.HandRank.FLUSH: _is_flush,
+    card.HandRank.FULL_HOUSE: _is_full_house,
+    card.HandRank.TRIPS: _is_trips,
+    card.HandRank.STRAIGHT: _is_straight,
+    card.HandRank.TWO_PAIR: _is_two_pair,
+    card.HandRank.PAIR: _is_pair,
+    card.HandRank.HIGH_CARD: _is_high_card
 }
 
 
@@ -111,7 +108,7 @@ def get_hand_strength(cards):
 def build_five_card_strength_lookup_table():
     lookup_table = {}
     for card_value in card_generators.generate_all_card_combinations(5):
-        cards = poker_types.Cards(value=card_value)
+        cards = card.Cards(value=card_value)
         lookup_table[card_value] = get_hand_strength(cards)
     return lookup_table
 
@@ -120,10 +117,10 @@ def build_seven_card_strength_lookup_table():
     lookup_table = {}
     five_card_strength_lookup_table = build_five_card_strength_lookup_table()
     for card_value in card_generators.generate_all_card_combinations(7):
-        cards = poker_types.Cards(value=card_value).cards
+        cards = card.Cards(value=card_value).cards
         best_strength = 0
         for hand in itertools.combinations(cards, 5):
-            hand = poker_types.Cards(cards=hand)
+            hand = card.Cards(cards=hand)
             hand_value = hand.value
             strength = five_card_strength_lookup_table[hand_value]
             if strength > best_strength:
@@ -159,5 +156,4 @@ def get_lookup_table(file_name):
 if __name__ == '__main__':
     seven_card_strength_lookup = build_seven_card_strength_lookup_table()
     # write_lookup_table(seven_card_strength_lookup, 'seven_card_strength_lookup.csv')
-    # seven_card_strength_lookup = build_seven_card_strength_lookup_table()
     pass

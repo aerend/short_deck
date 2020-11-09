@@ -1,9 +1,9 @@
 import random
 
-from short_deck import poker_types
+from short_deck import card
 
-MIN_CARD_BIT = poker_types.Rank.SIX * 4 + poker_types.Suit.DIAMONDS
-MAX_CARD_BIT = poker_types.Rank.ACE * 4 + poker_types.Suit.SPADES
+MIN_CARD_BIT = card.Rank.SIX * 4 + card.Suit.DIAMONDS
+MAX_CARD_BIT = card.Rank.ACE * 4 + card.Suit.SPADES
 
 
 def generate_all_card_combinations(number_of_cards, excluded_cards=0):
